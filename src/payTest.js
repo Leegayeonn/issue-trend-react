@@ -10,7 +10,7 @@ const PayTest = () => {
     const checkSubscriptionStatus = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8181/payment/subscriptionStatus/${userNum}`,
+          `${}/payment/subscriptionStatus/${userNum}`,
         );
         setIsSubscribed(response.data.isSubscribed);
       } catch (error) {
