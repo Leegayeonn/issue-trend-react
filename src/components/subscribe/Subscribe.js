@@ -12,7 +12,7 @@ import img from '../../assets/img/newspaper.jpg';
 import pay from '../../assets/img/payment.png';
 import axios from 'axios';
 import useNavigation from '../../common/func/useNavigation';
-import { API_BASE_URL, USER } from '../../config/host-config';
+import { API_BASE_URL } from '../../config/host-config';
 
 const Subscribe = () => {
   const { container, head, content, payBox, cancel, contentContainer, title } =
@@ -40,7 +40,7 @@ const Subscribe = () => {
 
   const handlePayment = async () => {
     try {
-      const response = await axios.post(API_BASE_URL + '/payment/ready', {
+      const response = await axios.post(`${API_BASE_URL}/payment/ready`, {
         userNo: userNum,
         itemName: '구독 서비스',
         quantity: 1,
@@ -65,7 +65,7 @@ const Subscribe = () => {
       }
       await axios.post(`${API_BASE_URL}/payment/cancelSubscription/${userNum}`);
       setIsSubscribed(false);
-      window.location.href = 'http://issuetrend.site/payment';
+      window.location.href = 'https://issuetrend.site/payment';
     } catch (error) {
       console.error('Error cancelling subscription:', error);
     }

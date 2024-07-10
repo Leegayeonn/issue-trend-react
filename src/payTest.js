@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from './config/host-config';
 
 const PayTest = () => {
   const [tid, setTid] = useState('');
@@ -10,7 +11,7 @@ const PayTest = () => {
     const checkSubscriptionStatus = async () => {
       try {
         const response = await axios.get(
-          `${}/payment/subscriptionStatus/${userNum}`,
+          `${API_BASE_URL}/payment/subscriptionStatus/${userNum}`,
         );
         setIsSubscribed(response.data.isSubscribed);
       } catch (error) {
@@ -22,7 +23,7 @@ const PayTest = () => {
 
   const handlePayment = async () => {
     try {
-      const response = await axios.post('http://localhost:8181/payment/ready', {
+      const response = await axios.post(`${API_BASE_URL}/payment/ready`, {
         userNo: userNum,
         itemName: '구독 서비스',
         quantity: 1,
@@ -39,12 +40,10 @@ const PayTest = () => {
 
   const handleCancelSubscription = async () => {
     try {
-      await axios.post(
-        `http://localhost:8181/payment/cancelSubscription/${userNum}`,
-      );
+      await axios.post(`${API_BASE_URL}/payment/cancelSubscription/${userNum}`);
       setIsSubscribed(false);
       alert('구독이 취소되었습니다.');
-      window.location.href = 'http://localhost:3000/home';
+      window.location.href = 'https://issuetrend.site/home';
     } catch (error) {
       console.error('Error cancelling subscription:', error);
     }

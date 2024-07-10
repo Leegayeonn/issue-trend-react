@@ -21,7 +21,7 @@ import RegionScreen from './components/regionInfo/RegionScreen';
 import PayTest from './payTest';
 import NaverMapApi from './components/regionInfo/NaverMapApi';
 import Subscribe from './components/subscribe/Subscribe';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 const script = document.createElement('script');
 script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}&libraries=places`;
@@ -38,18 +38,8 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/news' element={<NewsTemplate />} />
           <Route path='/news/:id' element={<NewsTemplate />} />
-          <Route
-            path='/login'
-            element={
-              isAuthenticated() ? <Navigate to='/home' replace /> : <Login />
-            }
-          />
-          <Route
-            path='/join'
-            element={
-              isAuthenticated() ? <Navigate to='/home' replace /> : <Join />
-            }
-          />
+          <Route path='/login' element={<Login />} />
+          <Route path='/join' element={<Join />} />
 
           <Route path='/oauth/kakao' element={<KakaoLoginHandler />} />
           <Route path='/board' element={<ReportTemplate />} />
