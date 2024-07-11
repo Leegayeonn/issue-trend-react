@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../store/auth-context';
 import { debounce } from 'lodash';
 
-// const { kakao } = window;
+const { kakao } = window;
 const ChangeInfo = () => {
   const navigate = useNavigate();
   const { onLogout, profileImage } = useContext(AuthContext);
@@ -237,36 +237,33 @@ const ChangeInfo = () => {
   // 지역설정
 
   async function getAddr(lat, lng) {
-    let geocoder = new window.google.maps.Geocoder();
-    console.log('geocoder: ', geocoder);
-    let latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
+    let geocoder = new kakao.maps.services.Geocoder();
+    let coord = new kakao.maps.LatLng(lat, lng);
+    let callback = await function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        // console.log(result);
+        const area = result[0].address.region_1depth_name;
+        // console.log(area);
 
-    geocoder.geocode({ location: latlng }, function (results, status) {
-      if (status === window.google.maps.GeocoderStatus.OK) {
-        if (results[0]) {
-          const area = results[0].address_components.find((component) =>
-            component.types.includes('administrative_area_level_1'),
-          ).long_name;
-
-          saveInputState({
-            key: 'regionName1',
-            inputValue: area,
-            msg: '지역 설정 완료',
-            flag: true,
-          });
-        }
-      } else {
-        console.error('Geocoder failed due to: ' + status);
+        saveInputState({
+          key: 'regionName1',
+          inputValue: area,
+          msg: '지역 설정 완료',
+          flag: true,
+        });
       }
-    });
+      //
+    };
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
   }
 
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
-          // getAddr(위도, 경도);
+          //getAddr(위도, 경도);
           getAddr(position.coords.latitude, position.coords.longitude);
+          // console.log(position);
         },
         function (error) {
           console.error(error);
@@ -279,13 +276,14 @@ const ChangeInfo = () => {
         },
       );
     } else {
-      alert('현재 브라우저에서는 geolocation을 지원하지 않습니다');
+      alert('현재 브라우저에서는 geolocation를 지원하지 않습니다');
     }
   }
 
   const addressClickHandler = () => {
     getLocation();
   };
+
   // 키워드
   const handleKeyDown = (value) => {
     // console.log(value);
