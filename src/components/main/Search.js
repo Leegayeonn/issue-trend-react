@@ -10,7 +10,7 @@ const Search = () => {
   const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
-    const socket = new WebSocket(`wss://issuetrend.online:3000`); // WebSocket 서버 주소
+    const socket = new WebSocket(`wss://search.issuetrend.online:3000`); // WebSocket 서버 주소
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       setSearch(data);

@@ -8,7 +8,7 @@ import AuthContext from '../../components/store/auth-context';
 import ChatLobby from './ChatLobby';
 import { regionCode } from './regionCode';
 import { API_BASE_URL, USER, ONLY_IP } from '../../config/host-config';
-const CHATSERVER = API_BASE_URL + ':5000'; // https://issuetrend.online:5000
+const CHATSERVER = 'wss://ws.issuetrend.online:5000'; // https://issuetrend.online:5000
 
 const roomSocket = io(CHATSERVER);
 
