@@ -7,8 +7,8 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import AuthContext from '../../components/store/auth-context';
 import ChatLobby from './ChatLobby';
 import { regionCode } from './regionCode';
-import { API_BASE_URL, USER } from '../../config/host-config';
-const CHATSERVER = API_BASE_URL + ':5000'; // http://15.165.89.176:5000
+import { API_BASE_URL, USER, ONLY_IP } from '../../config/host-config';
+const CHATSERVER = API_BASE_URL + ':5000'; // https://issuetrend.online:5000
 
 const roomSocket = io(CHATSERVER);
 
