@@ -10,4 +10,4 @@ if (clientHostName === 'localhost') {
 
 export const API_BASE_URL = backEndHostName;
 export const USER = '/issue-trend';
-export const ONLY_IP = '15.165.89.176';
+export const ONLY_IP = '3.34.116.209';
