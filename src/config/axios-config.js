@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_BASE_URL as BASE, USER } from './host-config';
 
-const ISSUE_URL = BASE + USER; //  https://localhost:8181/issue-trend
+const ISSUE_URL = BASE + USER; //  https://issuetrend.online/issue-trend
 
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
