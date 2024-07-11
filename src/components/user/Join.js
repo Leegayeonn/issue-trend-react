@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { FaFileImage } from 'react-icons/fa';
 import {
   Button,
@@ -21,6 +27,7 @@ import { Box } from '@mui/system';
 import useNavigation from '../../common/func/useNavigation';
 import AuthContext from '../store/auth-context';
 import CustomSnackBar from '../../common/layout/CustomSnackBar';
+import { debounce } from 'lodash';
 
 const { kakao } = window;
 const Join = () => {
@@ -128,10 +135,19 @@ const Join = () => {
       flag,
     });
   };
-  const nickChangeHandler = async (e) => {
+
+  const debouncedNickChangeHandler = useCallback(
+    debounce((nick) => {
+      console.log('debounce called! nick: ', nick);
+      nickChangeHandler(nick);
+    }, 100),
+    [],
+  );
+
+  const nickChangeHandler = async (nick) => {
     // 2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 구성
     const nickRegex = /^[a-zA-Z0-9가-힣]{2,16}$/;
-    const inputValue = e.target.value;
+    const inputValue = nick;
 
     let msg;
     let flag = false;
@@ -141,7 +157,7 @@ const Join = () => {
     } else if (!nickRegex.test(inputValue)) {
       msg = '2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 조합해주세요';
     } else {
-      await nickFetchDuplicateCheck(inputValue);
+      nickFetchDuplicateCheck(inputValue);
       return;
     }
 
@@ -154,6 +170,11 @@ const Join = () => {
   };
 
   const nickFetchDuplicateCheck = async (nickname) => {
+    if (!nickname) {
+      console.log('중복검사 할 닉네임 null 혹은 undefined!');
+      return;
+    }
+
     let msg = '';
     let flag = false;
 
@@ -170,12 +191,13 @@ const Join = () => {
       } else {
         msg = '사용 가능한 닉네임 입니다.';
         flag = true;
-        saveInputState({ key: 'nickname', inputValue: nickname, msg, flag });
       }
     } catch (error) {
       msg = '중복 확인 중 오류가 발생했습니다.';
       console.error(error);
     }
+
+    saveInputState({ key: 'nickname', inputValue: nickname, msg, flag });
   };
 
   const passwordHandler = (e) => {
@@ -497,7 +519,9 @@ const Join = () => {
                           type='text'
                           id='nickname'
                           autoComplete='nickname'
-                          onChange={nickChangeHandler}
+                          onChange={(e) =>
+                            debouncedNickChangeHandler(e.target.value)
+                          }
                         />
                         <span
                           id='check-span'
